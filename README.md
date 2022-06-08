@@ -47,4 +47,4 @@ functions:
 
 ### Invocation
 
-After successful deployment, upload a file to the S3 bucket that was created and check the corresponding CloudWatch logs to verify that the function with the proper amount of storage with invoked:
+After successful deployment, upload a file to the S3 bucket that was created and check the corresponding CloudWatch logs to verify that the function with the proper amount of storage with invoked.
