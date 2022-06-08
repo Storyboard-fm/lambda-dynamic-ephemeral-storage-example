@@ -15,6 +15,10 @@ authorName: 'Ryan Token'
 
 A simple example repo that demonstrates the dynamic ephemeral storage solution for AWS Lambda outlined in the corresponding Storyboard Dev Blog post.
 
+The "dynamic" nature of this is possible because of the [Serverless Framework](https://www.serverless.com/)
+
+If feasible, I will build this into a [Serverless Framework plugin](https://www.serverless.com/plugins). Please [get in touch](mailto:ryan@storyboard.fm) if you're interested.
+
 ## Usage
 
 ### Deployment
@@ -43,34 +47,4 @@ functions:
 
 ### Invocation
 
-After successful deployment, you can invoke the deployed function by using the following command:
-
-```bash
-serverless invoke --function 512MBHandler
-```
-
-Which should result in response similar to the following:
-
-```json
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": {}\n}"
-}
-```
-
-### Local development
-
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function 512MBHandler
-```
-
-Which should result in response similar to the following:
-
-```
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
-}
-```
+After successful deployment, upload a file to the S3 bucket that was created and check the corresponding CloudWatch logs to verify that the function with the proper amount of storage with invoked:
