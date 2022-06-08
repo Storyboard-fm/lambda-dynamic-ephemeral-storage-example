@@ -23,6 +23,8 @@ If feasible, I will build this into a [Serverless Framework plugin](https://www.
 
 ### Deployment
 
+First, install the Serverless CLI: `npm install -g serverless`
+
 In order to deploy the example, you need to run the following command:
 
 ```
