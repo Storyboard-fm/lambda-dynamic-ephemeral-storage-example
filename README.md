@@ -25,6 +25,8 @@ If feasible, I will build this into a [Serverless Framework plugin](https://www.
 
 First, install the Serverless CLI: `npm install -g serverless`
 
+Second, change the value of the `s3UploadBucket` name in the `params` section of `serverless.yml`. S3 bucket names need to be globally unique. The name defined here has already been deployed, so it will not work until you change the name of the bucket.
+
 In order to deploy the example, you need to run the following command:
 
 ```
