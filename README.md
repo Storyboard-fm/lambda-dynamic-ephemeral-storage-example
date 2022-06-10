@@ -29,7 +29,7 @@ Preliminary Notes:
 
 2. Change the value of the `s3UploadBucket` name in the `params` section of `serverless.yml`. S3 bucket names need to be globally unique. The name defined here has already been deployed, so it will not work until you change the name of the bucket.
 
-3. Change the SNS permissions in the `iamRoleStatements` sections of `serverless.yml`. They currently point to resources in my account, but they'll need to point to your account.
+3. Change the SNS permissions in the `iamRoleStatements` section of `serverless.yml`. They currently point to resources in my account, but they'll need to point to your account.
 
 In order to deploy the example, you need to run the following command:
 
