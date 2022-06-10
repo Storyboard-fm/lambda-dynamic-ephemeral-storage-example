@@ -13,7 +13,7 @@ authorName: 'Ryan Token'
 
 # AWS Lambda Dynamic Ephemeral Storage Example
 
-A simple example repo that demonstrates the dynamic ephemeral storage solution for AWS Lambda outlined in the corresponding Storyboard Dev Blog post.
+A simple example repo that demonstrates the dynamic ephemeral storage solution for AWS Lambda outlined in the [corresponding post on the Storyboard Dev Blog](https://medium.com/p/8fd38c0df93d).
 
 The "dynamic" nature of this is possible because of the [Serverless Framework](https://www.serverless.com/)
 
@@ -23,9 +23,13 @@ If feasible, I will build this into a [Serverless Framework plugin](https://www.
 
 ### Deployment
 
-First, install the Serverless CLI: `npm install -g serverless`
+Preliminary Notes:
 
-Second, change the value of the `s3UploadBucket` name in the `params` section of `serverless.yml`. S3 bucket names need to be globally unique. The name defined here has already been deployed, so it will not work until you change the name of the bucket.
+1. Install the Serverless CLI: `npm install -g serverless`
+
+2. Change the value of the `s3UploadBucket` name in the `params` section of `serverless.yml`. S3 bucket names need to be globally unique. The name defined here has already been deployed, so it will not work until you change the name of the bucket.
+
+3. Change the SNS permissions in the `iamRoleStatements` sections of `serverless.yml`. They currently point to resources in my account, but they'll need to point to your account.
 
 In order to deploy the example, you need to run the following command:
 
