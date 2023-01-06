@@ -8,7 +8,7 @@ provider:
   stage: dev
   environment:
     STAGE: ${opt:stage, self:provider.stage}
-    
+
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -21,32 +21,27 @@ provider:
         - sns:Publish
         - sns:Subscribe
       Resource:
-        - 'arn:aws:sns:us-east-1:260462628773:encode-512MB-dev'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-512MB-prod'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-1GB-dev'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-1GB-prod'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-3GB-dev'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-3GB-prod'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-5GB-dev'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-5GB-prod'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-10GB-dev'
-        - 'arn:aws:sns:us-east-1:260462628773:encode-10GB-prod'
-  
+        - !Ref DemoSNSTopicFor512MB
+        - !Ref DemoSNSTopicFor1GB
+        - !Ref DemoSNSTopicFor3GB
+        - !Ref DemoSNSTopicFor5GB
+        - !Ref DemoSNSTopicFor10GB
+
 params:
   prod:
     s3UploadBucket: audio-uploads-dynamic-ephemeral-storage-test-prod
-    512MBSnsTopic: encode-512MB-prod
-    1GBSnsTopic: encode-1GB-prod
-    3GBSnsTopic: encode-3GB-prod
-    5GBSnsTopic: encode-5GB-prod
-    10GBSnsTopic: encode-10GB-prod
+    512MBSnsTopic: des-demo-encode-512MB-prod
+    1GBSnsTopic: des-demo-encode-1GB-prod
+    3GBSnsTopic: des-demo-encode-3GB-prod
+    5GBSnsTopic: des-demo-encode-5GB-prod
+    10GBSnsTopic: des-demo-encode-10GB-prod
   dev:
     s3UploadBucket: audio-uploads-dynamic-ephemeral-storage-test-dev
-    512MBSnsTopic: encode-512MB-dev
-    1GBSnsTopic: encode-1GB-dev
-    3GBSnsTopic: encode-3GB-dev
-    5GBSnsTopic: encode-5GB-dev
-    10GBSnsTopic: encode-10GB-dev
+    512MBSnsTopic: des-demo-encode-512MB-dev
+    1GBSnsTopic: des-demo-encode-1GB-dev
+    3GBSnsTopic: des-demo-encode-3GB-dev
+    5GBSnsTopic: des-demo-encode-5GB-dev
+    10GBSnsTopic: des-demo-encode-10GB-dev
 
 functions:
   step0Publisher:
@@ -55,34 +50,75 @@ functions:
       - s3:
           bucket: ${param:s3UploadBucket}
           event: s3:ObjectCreated:*
-  
+
   512MBHandler:
     handler: audioProcessor.encode
     ephemeralStorageSize: 512
     events:
-      - sns: ${param:512MBSnsTopic}
-    
+      - sns:
+          arn: !Ref DemoSNSTopicFor512MB
+          topicName: ${param:512MBSnsTopic}
+
   1GBHandler:
     handler: audioProcessor.encode
     ephemeralStorageSize: 1024
     events:
-      - sns: ${param:1GBSnsTopic}
-    
+      - sns:
+          arn: !Ref DemoSNSTopicFor1GB
+          topicName: ${param:1GBSnsTopic}
+
   3GBHandler:
     handler: audioProcessor.encode
     ephemeralStorageSize: 3072
     events:
-      - sns: ${param:3GBSnsTopic}
-    
+      - sns:
+          arn: !Ref DemoSNSTopicFor3GB
+          topicName: ${param:3GBSnsTopic}
+
   5GBHandler:
     handler: audioProcessor.encode
     ephemeralStorageSize: 5120
     events:
-      - sns: ${param:5GBSnsTopic}
-    
+      - sns:
+          arn: !Ref DemoSNSTopicFor5GB
+          topicName: ${param:5GBSnsTopic}
+
   10GBHandler:
     handler: audioProcessor.encode
     ephemeralStorageSize: 10240
     events:
-      - sns: ${param:10GBSnsTopic}
-  
+      - sns:
+          arn: !Ref DemoSNSTopicFor10GB
+          topicName: ${param:10GBSnsTopic}
+
+resources:
+  Resources:
+    DemoSNSTopicFor512MB:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${param:512MBSnsTopic}
+        KmsMasterKeyId: ${ssm:kms-sns-key-id}
+
+    DemoSNSTopicFor1GB:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${param:1GBSnsTopic}
+        KmsMasterKeyId: ${ssm:kms-sns-key-id}
+
+    DemoSNSTopicFor3GB:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${param:3GBSnsTopic}
+        KmsMasterKeyId: ${ssm:kms-sns-key-id}
+
+    DemoSNSTopicFor5GB:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${param:5GBSnsTopic}
+        KmsMasterKeyId: ${ssm:kms-sns-key-id}
+
+    DemoSNSTopicFor10GB:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${param:10GBSnsTopic}
+        KmsMasterKeyId: ${ssm:kms-sns-key-id}
